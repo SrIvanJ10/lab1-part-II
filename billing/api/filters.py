@@ -8,7 +8,7 @@ class InvoiceFilter(django_filters.FilterSet):
 
     class Meta:
         model = Invoice
-        fields = ["invoice_no", "issued_on"]
+        fields = ["invoice_no", "issued_on", "provider"]
 
 
 class ProviderFilter(django_filters.FilterSet):
