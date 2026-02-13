@@ -12,7 +12,7 @@ from .serializers import (
     InvoiceLineNestedSerializer,
     InvoiceLineCreateSerializer,
 )
-from .filters import InvoiceFilter
+from .filters import InvoiceFilter, BarrelFilter
 
 
 class ProviderViewSet(viewsets.ModelViewSet):
@@ -25,6 +25,9 @@ class BarrelViewSet(viewsets.ModelViewSet):
     serializer_class = BarrelSerializer
     # Requirement: barrels endpoint without filters on billed/unbilled
     filter_backends = []
+    #Activate the filter
+    filter_backends = [DjangoFilterBackend]  
+    filterset_class = BarrelFilter           
 
 
 class InvoiceViewSet(viewsets.ModelViewSet):
