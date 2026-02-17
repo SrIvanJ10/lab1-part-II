@@ -1,4 +1,6 @@
 import django_filters
+from django.db import models
+from ..models import Invoice, Provider
 
 from ..models import Invoice, Provider, Barrel
 
@@ -24,5 +26,12 @@ class ProviderFilter(django_filters.FilterSet):
 
     def filter_has_barrels_to_bill(self, queryset, name, value):
         if value:
-            return queryset.filter(barrels__billed=False).distinct()
+            # Filter providers that have barrels where sum(invoice_lines.liters) < barrel.liters
+            # OR where invoice_lines is null (no invoices yet)
+            return queryset.annotate(
+                total_billed_liters=models.Sum("barrels__invoice_lines__liters")
+            ).filter(
+                models.Q(barrels__invoice_lines__isnull=True) |
+                models.Q(barrels__liters__gt=models.F("barrels__invoice_lines__liters"))
+            ).distinct()
         return queryset

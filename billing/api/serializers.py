@@ -62,7 +62,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invoice
         # 2. Añadimos "total_amount" a la lista de campos[cite: 121].  
-        fields = ["id", "invoice_no", "issued_on", "total_amount"] 
+        fields = ["id", "invoice_no", "provider", "issued_on", "total_amount"] 
 
     # 3. Creamos la función para calcular el valor total [cite: 122, 123]
     def get_total_amount(self, obj: Invoice):
