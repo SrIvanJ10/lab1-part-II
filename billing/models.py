@@ -55,7 +55,7 @@ class Barrel(models.Model):
 
 class Invoice(models.Model):
     invoice_no = models.CharField(max_length=64, unique=True)
-    provider = models.ForeignKey(Provider, related_name="invoices", on_delete=models.PROTECT)
+    provider = models.ForeignKey(Provider, related_name="invoices", on_delete=models.PROTECT, null=True, blank=True)
     issued_on = models.DateField()
 
     def __str__(self) -> str:
@@ -78,7 +78,7 @@ class Invoice(models.Model):
         if barrel.is_totally_billed():
             raise ValueError("The barrel is already fully billed")
 
-        if barrel.provider != self.provider:
+        if self.provider is not None and barrel.provider != self.provider:
             raise ValueError("The barrel does not belong to the invoice provider")
 
         if barrel.liters != liters:
